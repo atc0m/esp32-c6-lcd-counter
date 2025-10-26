@@ -18,17 +18,19 @@ fn main() {
     let mut driver = Ws2812Esp32RmtDriver::new(channel, led_pin).unwrap();
     // assert_eq!(pixel, [0, 30, 0]);
 
+    let mut r: u8;
+    let mut g: u8;
+    let mut b: u8;
+
     loop {
-        let mut r: u8 = rand::thread_rng().gen();
-        let mut g: u8 = rand::thread_rng().gen();
-        let mut b: u8 = rand::thread_rng().gen();
+        r = rand::rng().random();
+        g = rand::rng().random();
+        b = rand::rng().random();
 
         let color = LedPixelColorGrb24::new_with_rgb(r, g, b);
         let pixel: [u8; 3] = color.as_ref().try_into().unwrap();
         driver.write_blocking(pixel.clone().into_iter()).unwrap();
-        sleep(Duration::from_millis(100));
+        sleep(Duration::from_millis(1000));
     }
-    
 
-    log::info!("do you see the red colour?");
 }
