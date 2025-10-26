@@ -25,6 +25,9 @@ experimental = ["esp-idf-svc/experimental"]
 [dependencies]
 log = "0.4"
 esp-idf-svc = "0.51"
+esp-idf-hal = "0.45.2"
+ws2812-esp32-rmt-driver = "0.13.0"
+rand = "0.9.2"
 
 # --- Optional Embassy Integration ---
 # esp-idf-svc = { version = "0.51", features = ["critical-section", "embassy-time-driver", "embassy-sync"] }

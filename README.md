@@ -27,7 +27,7 @@ This project is based on the ESP32-C6-LCD-1.47 board from waveshare. Details fro
 
 The Rust on ESP ecosystem offers two primary development paths: a `std`-enabled approach leveraging the Espressif IoT Development Framework (ESP-IDF), and a `no_std` or "bare-metal" approach using the esp-hal crates.
 
-"bare-metal" sounds scary so for this project, I chose the `std`-enabled approach, facilitated by the `esp-idf-template` project generator.
+"bare-metal" sounds scary so for this project, so I chose the `std`-enabled approach, facilitated by the `esp-idf-template` project generator.
 
 ## Prequisites for `esp-idf-template`
 
@@ -58,4 +58,37 @@ The ESP32-C6 board that I have came with the ESP-IDF v5.4.1 bootloader. However 
 A github issue with details: https://github.com/esp-rs/esp-idf-template/issues/277
 
 The fix was updating .cargo/config.toml ESP_IDF_VERSION = "v5.3.3" to "v5.4.1"
+
+(also added ESP_IDF_TOOLS_INSTALL_DIR = "global" in config.toml and env `export IDF_MAINTAINER=y`. will confirm soon if this is actually needed)
+
+
+# ESP32-C6-LCD-1.47 Device Features
+
+## RGB LED
+
+The board comes with WS2812B RGB LED addressable via GPIO pin 8.
+
+A WS2812B LED cannot be controlled by simply setting a GPIO pin to high or low. Requires high-speed, timed serial protocol to set its colour and brightness. The RMT peripheral can be used for this task.
+
+The rust driver library to control the LED: https://github.com/cat-in-136/ws2812-esp32-rmt-driver
+
+## 1.47 TFT display SPI Interface
+
+Creds to AndroidCrypto and his [Medium article](https://medium.com/@androidcrypto/getting-started-with-an-esp32-c6-waveshare-lcd-device-with-1-47-inch-st7789-tft-display-07804fdc589a)
+
+The 
+
+```
+Wiring of the ST7789 TFT with an ESP32-C6 Waveshare
+TFT   ESP32-C6
+GND   GND
+VDD   3.3V 
+SCL   7
+SDA   6 (= "MOSI")
+RST   21
+DC    15
+CS    14
+BLK   22
+```
+
 
