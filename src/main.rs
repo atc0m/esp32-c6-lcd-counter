@@ -1,10 +1,36 @@
+use esp_idf_hal::peripherals::Peripherals;
+use ws2812_esp32_rmt_driver::driver::color::{LedPixelColor, LedPixelColorGrb24};
+use ws2812_esp32_rmt_driver::driver::Ws2812Esp32RmtDriver;
+use std::thread::sleep;
+use std::time::Duration;
+use rand::Rng;
+
 fn main() {
     // It is necessary to call this function once. Otherwise some patches to the runtime
     // implemented by esp-idf-sys might not link properly. See https://github.com/esp-rs/esp-idf-template/issues/71
     esp_idf_svc::sys::link_patches();
 
-    // Bind the log crate to the ESP Logging facilities
-    esp_idf_svc::log::EspLogger::initialize_default();
+    // Get peripherals
+    let peripherals = Peripherals::take().unwrap();
+    let led_pin = peripherals.pins.gpio8;
+    let channel = peripherals.rmt.channel0;
 
-    log::info!("Hello, world!");
+    let mut driver = Ws2812Esp32RmtDriver::new(channel, led_pin).unwrap();
+    // assert_eq!(pixel, [0, 30, 0]);
+
+    let mut r: u8;
+    let mut g: u8;
+    let mut b: u8;
+
+    loop {
+        r = rand::rng().random();
+        g = rand::rng().random();
+        b = rand::rng().random();
+
+        let color = LedPixelColorGrb24::new_with_rgb(r, g, b);
+        let pixel: [u8; 3] = color.as_ref().try_into().unwrap();
+        driver.write_blocking(pixel.clone().into_iter()).unwrap();
+        sleep(Duration::from_millis(1000));
+    }
+
 }
