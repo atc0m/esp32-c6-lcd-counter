@@ -20,20 +20,20 @@ Details from the manufacturer [here](https://www.waveshare.com/wiki/ESP32-C6-LCD
 ### 1. Toolchain Installation
 Follow the official guide: https://docs.espressif.com/projects/rust/book/getting-started/toolchain.html
 
-    - Install Rust: https://rustup.rs/
-    - RISC-V toolchain
-        `rustup toolchain install stable --component rust-src`
-    - Target (ESP32-C2 and ESP32-C3 vs ESP32-C6 and ESP32-H2)
-        `rustup target add riscv32imac-unknown-none-elf`
+- Install Rust: https://rustup.rs/
+- RISC-V toolchain
+    `rustup toolchain install stable --component rust-src`
+- Target (ESP32-C2 and ESP32-C3 vs ESP32-C6 and ESP32-H2)
+    `rustup target add riscv32imac-unknown-none-elf`
 
-    This project is for the C6 board which is not based on the Xtensa architecture so espup is not needed.
+This project is for the C6 board which is not based on the Xtensa architecture so espup is not needed.
 
 ### 2. Useful Tooling
-    Guide [here](https://docs.espressif.com/projects/rust/book/getting-started/tooling/index.html)
+Guide [here](https://docs.espressif.com/projects/rust/book/getting-started/tooling/index.html)
 
-    - esp-generate: `cargo install esp-generate  --locked` (turned out this is not needed because I'm using cargo-generate instead?)
-    - espflash: `cargo install espflash --locked`
-    - probe-rs: Installed with instruction [here](https://probe.rs/docs/getting-started/installation/)
+- esp-generate: `cargo install esp-generate  --locked` (turned out this is not needed because I'm using cargo-generate instead?)
+- espflash: `cargo install espflash --locked`
+- probe-rs: Installed with instruction [here](https://probe.rs/docs/getting-started/installation/)
 
 
 ## My Journey from Zero to Hero
@@ -114,5 +114,7 @@ When you fire up this bad boy:
 5. The numbers increment every second until reset or it hits 99,999,999 (which would take about 3 years)
 
 The digits are drawn using good old rectangles to create that retro seven-segment display look.
+
+![Image](https://github.com/user-attachments/assets/d90b5822-45c3-499f-8db9-a0087ef0c740)
 
 *Built with Rust 🦀, and trial and error*
