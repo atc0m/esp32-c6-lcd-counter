@@ -194,6 +194,7 @@ fn main() {
         log::info!("Running...");
         // Use it to display a number
         let digits = [
+            (number / 10000000) % 10,
             (number / 1000000) % 10,
             (number / 100000) % 10,
             (number / 10000) % 10,
@@ -204,7 +205,7 @@ fn main() {
         ];
 
         for (i, &digit) in digits.iter().enumerate() {
-            draw_digit(&mut display, digit as u8, 50 + (i as i32 * 25), 50);
+            draw_digit(&mut display, digit as u8, 65 + (i as i32 * 25), 65);
         }
     }
 
