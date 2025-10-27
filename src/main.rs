@@ -1,16 +1,20 @@
-use esp_idf_hal::peripherals::Peripherals;
-use esp_idf_hal::gpio::PinDriver;
-use esp_idf_hal::spi::{SpiDeviceDriver, SpiDriver, SpiDriverConfig, Dma};
-use esp_idf_hal::spi::config::Config;
-use esp_idf_hal::units::Hertz;
-use esp_idf_hal::gpio::AnyIOPin;
+use esp_idf_hal::{
+    peripherals::Peripherals,
+    gpio::{PinDriver, AnyIOPin},
+    spi::{SpiDeviceDriver, SpiDriver, SpiDriverConfig, Dma},
+    spi::config::Config,
+    units::Hertz,
+    delay::FreeRtos
+};
 use ws2812_esp32_rmt_driver::driver::color::{LedPixelColor, LedPixelColorGrb24};
 use ws2812_esp32_rmt_driver::driver::Ws2812Esp32RmtDriver;
-//use std::thread::sleep;
-//use std::time::Duration;
-//use rand::Rng;
-use mipidsi::{Builder, models::ST7789, options::{ColorOrder, Orientation, Rotation, ColorInversion}};
-use mipidsi::interface::SpiInterface;
+
+use mipidsi::{
+    interface::SpiInterface,
+    Builder,
+    models::ST7789,
+    options::{ColorOrder, Orientation, Rotation, ColorInversion}
+};
 use embedded_graphics::{
     primitives::{Rectangle, PrimitiveStyle, PrimitiveStyleBuilder},
     pixelcolor::Rgb565,
@@ -19,7 +23,6 @@ use embedded_graphics::{
     mono_font::{ascii::FONT_10X20, MonoTextStyle},
     text::{Alignment, Text},
 };
-use esp_idf_hal::delay::FreeRtos;
 
 enum Color {
     Red,
@@ -174,58 +177,6 @@ fn main() {
     let display_size = display.size();
     log::info!("Display size: {:?}", display_size);
 
-    // Draw a red border around the entire display
-    let border = Rectangle::new(
-        Point::new(0, 0),
-        Size::new(display_size.width, display_size.height)
-    );
-    border.into_styled(
-        PrimitiveStyleBuilder::new()
-            .stroke_color(Rgb565::RED)
-            .stroke_width(2)
-            .fill_color(Rgb565::BLACK)
-            .build()
-        )
-        .draw(&mut display)
-        .unwrap();
-
-    // Draw corner markers to identify orientation
-    // Top-left: Green
-    Rectangle::new(Point::new(0, 0), Size::new(20, 20))
-        .into_styled(PrimitiveStyle::with_fill(Rgb565::GREEN))
-        .draw(&mut display)
-        .unwrap();
-
-    // Top-right: Blue
-    Rectangle::new(
-        Point::new(display_size.width as i32 - 20, 0), 
-        Size::new(20, 20)
-    )
-        .into_styled(PrimitiveStyle::with_fill(Rgb565::BLUE))
-        .draw(&mut display)
-        .unwrap();
-
-    // Bottom-left: Yellow
-    Rectangle::new(
-        Point::new(0, display_size.height as i32 - 20), 
-        Size::new(20, 20)
-    )
-        .into_styled(PrimitiveStyle::with_fill(Rgb565::YELLOW))
-        .draw(&mut display)
-        .unwrap();
-
-    // Bottom-right: Magenta
-    Rectangle::new(
-        Point::new(
-            display_size.width as i32 - 20, 
-            display_size.height as i32 - 20
-        ), 
-        Size::new(20, 20)
-    )
-        .into_styled(PrimitiveStyle::with_fill(Rgb565::MAGENTA))
-        .draw(&mut display)
-        .unwrap();
-
     let (r, g, b) = Color::Green.rgb();
     update_led_colour(r, g, b, &mut driver);
     log::info!("Done");
@@ -233,7 +184,7 @@ fn main() {
     log::info!("Display initialized successfully!");
 
 
-    // Display a number
+    // Start counter
     let mut number = 0;
 
     // Keep the program running - this is important!
@@ -243,6 +194,10 @@ fn main() {
         log::info!("Running...");
         // Use it to display a number
         let digits = [
+            (number / 10000000) % 10,
+            (number / 1000000) % 10,
+            (number / 100000) % 10,
+            (number / 10000) % 10,
             (number / 1000) % 10,
             (number / 100) % 10,
             (number / 10) % 10,
@@ -250,7 +205,7 @@ fn main() {
         ];
 
         for (i, &digit) in digits.iter().enumerate() {
-            draw_digit(&mut display, digit as u8, 50 + (i as i32 * 25), 50);
+            draw_digit(&mut display, digit as u8, 65 + (i as i32 * 25), 65);
         }
     }
 
