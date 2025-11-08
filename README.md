@@ -1,21 +1,17 @@
-# ESP32-C6 LCD Counter - First Embedded Rust Adventure 🦀
+# ESP32-C6 LCD with Rust
 
-## What is this thing?
+A simple counter that displays ever-increasing numbers on a 1.47" LCD screen using seven-segment style digits.
 
-This is my journey into making pixels appear on a tiny screen.
+## Hardware
 
-**The Project**: A simple counter that displays ever-increasing numbers on a 1.47" LCD screen using seven-segment style digits. It's counting seconds since you turned it on, very exciting...
-
-## The Hardware
-
-This project is based on the ESP32-C6-LCD-1.47 board from Waveshare. It's got:
+ESP32-C6-LCD-1.47 board from Waveshare:
 - A little 1.47" TFT display (172x320 pixels)
 - An RGB LED that I can make any color (currently using it as a status indicator)
 - RISC-V processor
 
 Details from the manufacturer [here](https://www.waveshare.com/wiki/ESP32-C6-LCD-1.47)
 
-## Setup Instructions 🛠️
+## Setup
 
 ### 1. Toolchain Installation
 Follow the official guide: https://docs.espressif.com/projects/rust/book/getting-started/toolchain.html
@@ -36,13 +32,14 @@ Guide [here](https://docs.espressif.com/projects/rust/book/getting-started/tooli
 - probe-rs: Installed with instruction [here](https://probe.rs/docs/getting-started/installation/)
 
 
-## My Journey from Zero to Hero
+## Zero to Hero
 
 ### `std` vs `no_std`
 
 The Rust on ESP ecosystem offers two primary development paths: a `std`-enabled approach leveraging the Espressif IoT Development Framework (ESP-IDF), and a `no_std` or "bare-metal" approach using the esp-hal crates.
 
-"bare-metal" sounds scary so for this project, so I chose the `std`-enabled approach, facilitated by the `esp-idf-template` project generator.
+"bare-metal" it out of scope for this project, so I chose the `std`-enabled approach.
+Repo setup with `esp-idf-template` project generator.
 
 ### Prerequisites for `esp-idf-template`
 
@@ -107,9 +104,9 @@ BLK   22
 ## What Does It Actually Do?
 
 When you fire up this bad boy:
-1. **Red LED** - "Hold on, I'm thinking..."
-2. Display initializes (there's a dramatic 120ms pause for effect)
-3. **Green LED** - "We're good to go!"
+1. **Red LED** - "Setup"
+2. Display initializes
+3. **Green LED** - "Ready"
 4. Eight glorious seven-segment digits start counting up from 0
 5. The numbers increment every second until reset or it hits 99,999,999 (which would take about 3 years)
 
